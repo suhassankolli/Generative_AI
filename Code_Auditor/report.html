@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>Code Audit Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; }
+    .meta { margin-bottom: 16px; }
+    .score { font-size: 22px; font-weight: 700; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; vertical-align: top; }
+    th { background: #f5f5f5; text-align: left; }
+    tr:nth-child(even) { background: #fafafa; }
+    pre { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+  </style>
+</head>
+<body>
+  <div class="meta">
+    <div class="score">Overall Code Quality Score: 0%</div>
+    <div>Source: C:\Users\suhas\Learning\AI\Gen AI\Code_Auditor\sample_test.ipynb</div>
+    <div>Generated: 2025-12-29T18:30:39</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 10%;">Line</th>
+        <th style="width: 10%;">Severity</th>
+        <th style="width: 30%;">Defect / Issue</th>
+        <th style="width: 25%;">Code Snippet</th>
+        <th style="width: 25%;">Possible Resolution</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>cell 1:19</td><td>major</td><td>Catching bare Exception can hide real failures and makes debugging harder.</td><td><pre style='margin:0;white-space:pre-wrap'>except Exception:</pre></td><td><pre style='margin:0;white-space:pre-wrap'>Catch specific exception types, and log/raise with context.</pre></td></tr>
+<tr><td>cell 1:18</td><td>critical</td><td>Use of eval/exec is unsafe and can lead to code injection.</td><td><pre style='margin:0;white-space:pre-wrap'>return eval(x)   # unsafe</pre></td><td><pre style='margin:0;white-space:pre-wrap'>Avoid eval/exec. If parsing is needed, use ast.literal_eval or a safe parser.</pre></td></tr>
+<tr><td>cell 1:4</td><td>major</td><td>Mutable default argument can cause state to leak across calls.</td><td><pre style='margin:0;white-space:pre-wrap'>def compute_stats(...):</pre></td><td><pre style='margin:0;white-space:pre-wrap'>Use None as default and initialize inside the function.</pre></td></tr>
+<tr><td>cell 1:4</td><td>major</td><td>Mutable default argument used in function definition.</td><td><pre style='margin:0;white-space:pre-wrap'>def compute_stats(df, cols=[]):</pre></td><td><pre style='margin:0;white-space:pre-wrap'>Change the default value of &#x27;cols&#x27; to None and initialize it inside the function if it is None.</pre></td></tr>
+<tr><td>cell 1:8</td><td>major</td><td>Using iterrows() is inefficient for large DataFrames.</td><td><pre style='margin:0;white-space:pre-wrap'>for i,row in df.iterrows():</pre></td><td><pre style='margin:0;white-space:pre-wrap'>Use vectorized operations or apply() instead of iterrows() for better performance.</pre></td></tr>
+<tr><td>cell 1:12</td><td>critical</td><td>Using eval() can lead to security vulnerabilities.</td><td><pre style='margin:0;white-space:pre-wrap'>return eval(x)</pre></td><td><pre style='margin:0;white-space:pre-wrap'>Avoid using eval() and consider safer alternatives for evaluating expressions.</pre></td></tr>
+<tr><td>cell 1:16</td><td>major</td><td>Inefficient nested loops for DataFrame operations.</td><td><pre style='margin:0;white-space:pre-wrap'>for i in range(len(df)):
+    for j in range(len(df)):
+        total += df.iloc[i,0] * df.iloc[j,0]</pre></td><td><pre style='margin:0;white-space:pre-wrap'>Use vectorized operations with NumPy or pandas to perform the calculations more efficiently.</pre></td></tr>
+<tr><td>cell 1:23</td><td>minor</td><td>Repeated computation inside loop leads to performance issues.</td><td><pre style='margin:0;white-space:pre-wrap'>loss = sum([x*x for x in data]) / len(data)</pre></td><td><pre style='margin:0;white-space:pre-wrap'>Move the computation of len(data) outside the loop and use it directly in the loss calculation.</pre></td></tr>
+<tr><td>cell 2:7</td><td>minor</td><td>Potential slow string concatenation (+=) can become O(n^2) in loops.</td><td><pre style='margin:0;white-space:pre-wrap'>results += f&quot;{epoch}:{loss}\n&quot;</pre></td><td><pre style='margin:0;white-space:pre-wrap'>Accumulate strings in a list and use &#x27;&#x27;.join(parts) once at the end.</pre></td></tr>
+<tr><td>cell 1:25</td><td>major</td><td>Nested for-loops may be slow for large datasets.</td><td><pre style='margin:0;white-space:pre-wrap'>for ...:
+    for ...:</pre></td><td><pre style='margin:0;white-space:pre-wrap'>Consider vectorization (numpy/pandas), batching, or optimized libraries.</pre></td></tr>
+<tr><td>cell 1:12</td><td>major</td><td>Row-wise iteration over pandas DataFrame is slow for large data.</td><td><pre style='margin:0;white-space:pre-wrap'>for i,row in df.iterrows():   # slow</pre></td><td><pre style='margin:0;white-space:pre-wrap'>Prefer vectorized ops, merge/join, boolean masks, or numpy arrays. If iteration is unavoidable, prefer itertuples() over iterrows().</pre></td></tr>
+<tr><td>cell 2:6</td><td>minor</td><td>Using sum([...]) builds an intermediate list; can waste memory on large data.</td><td><pre style='margin:0;white-space:pre-wrap'>loss = sum([x*x for x in data]) / len(data)</pre></td><td><pre style='margin:0;white-space:pre-wrap'>Use a generator: sum(x*x for x in data) or numpy vectorization when applicable.</pre></td></tr>
+<tr><td>cell 1:4</td><td>minor</td><td>Using a mutable default argument for &#x27;cols&#x27; can lead to unexpected behavior.</td><td><pre style='margin:0;white-space:pre-wrap'>def compute_stats(df, cols=[]):</pre></td><td><pre style='margin:0;white-space:pre-wrap'>Change the default value of &#x27;cols&#x27; to None and initialize it inside the function if it is None.</pre></td></tr>
+<tr><td>cell 1:8</td><td>major</td><td>Using iterrows() is inefficient for row-wise operations in pandas.</td><td><pre style='margin:0;white-space:pre-wrap'>for i,row in df.iterrows():</pre></td><td><pre style='margin:0;white-space:pre-wrap'>Use vectorized operations instead, such as df[&#x27;x&#x27;] * 2, to improve performance.</pre></td></tr>
+<tr><td>cell 1:16</td><td>critical</td><td>The nested loops in very_long_function lead to O(n^2) complexity, which is inefficient for large DataFrames.</td><td><pre style='margin:0;white-space:pre-wrap'>for i in range(len(df)):
+    for j in range(len(df)):
+        total += df.iloc[i,0] * df.iloc[j,0]</pre></td><td><pre style='margin:0;white-space:pre-wrap'>Use vectorized operations with numpy or pandas to compute the total more efficiently, e.g., total = (df.iloc[:,0].values[:, None] * df.iloc[:,0].values).sum()</pre></td></tr>
+<tr><td>cell 1:24</td><td>major</td><td>Repeated computation of &#x27;sum([x*x for x in data]) / len(data)&#x27; inside the loop is inefficient.</td><td><pre style='margin:0;white-space:pre-wrap'>loss = sum([x*x for x in data]) / len(data)</pre></td><td><pre style='margin:0;white-space:pre-wrap'>Calculate the mean of squares once before the loop and reuse it, or use numpy for efficient computation.</pre></td></tr>
+<tr><td>cell 2:4</td><td>minor</td><td>Possible magic number reduces readability/maintainability.</td><td><pre style='margin:0;white-space:pre-wrap'>for epoch in range(1000):</pre></td><td><pre style='margin:0;white-space:pre-wrap'>Replace with a named constant and explain its meaning.</pre></td></tr>
+<tr><td>cell 1:4</td><td>major</td><td>Mutable default argument used for &#x27;cols&#x27; which can lead to unexpected behavior.</td><td><pre style='margin:0;white-space:pre-wrap'>def compute_stats(df, cols=[]):</pre></td><td><pre style='margin:0;white-space:pre-wrap'>Change the default value of &#x27;cols&#x27; to None and initialize it inside the function if it is None.</pre></td></tr>
+<tr><td>cell 1:8</td><td>major</td><td>Using iterrows() is inefficient for large DataFrames; it can lead to performance issues.</td><td><pre style='margin:0;white-space:pre-wrap'>for i,row in df.iterrows():</pre></td><td><pre style='margin:0;white-space:pre-wrap'>Use vectorized operations or apply() instead of iterrows() for better performance.</pre></td></tr>
+<tr><td>cell 1:12</td><td>critical</td><td>Using eval() can lead to security vulnerabilities and is generally unsafe.</td><td><pre style='margin:0;white-space:pre-wrap'>return eval(x)</pre></td><td><pre style='margin:0;white-space:pre-wrap'>Avoid using eval() and consider safer alternatives like ast.literal_eval() if parsing expressions is necessary.</pre></td></tr>
+<tr><td>cell 1:16</td><td>major</td><td>Function &#x27;very_long_function&#x27; is too long and complex, making it hard to read and maintain.</td><td><pre style='margin:0;white-space:pre-wrap'>def very_long_function(df):</pre></td><td><pre style='margin:0;white-space:pre-wrap'>Break down &#x27;very_long_function&#x27; into smaller, more manageable functions with clear responsibilities.</pre></td></tr>
+<tr><td>cell 1:19</td><td>major</td><td>Using nested loops with DataFrame indexing is inefficient and can lead to performance issues.</td><td><pre style='margin:0;white-space:pre-wrap'>for i in range(len(df)):
+        for j in range(len(df)):
+            total += df.iloc[i,0] * df.iloc[j,0]</pre></td><td><pre style='margin:0;white-space:pre-wrap'>Use vectorized operations with NumPy or pandas to perform the calculations more efficiently.</pre></td></tr>
+<tr><td>cell 1:25</td><td>minor</td><td>The function &#x27;train_model&#x27; has poor readability due to the repeated computation of loss inside the loop.</td><td><pre style='margin:0;white-space:pre-wrap'>loss = sum([x*x for x in data]) / len(data)</pre></td><td><pre style='margin:0;white-space:pre-wrap'>Precompute the length of data and use a more efficient method to calculate loss outside the loop if possible.</pre></td></tr>
+    </tbody>
+  </table>
+</body>
+</html>
